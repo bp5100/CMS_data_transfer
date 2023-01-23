@@ -1,4 +1,3 @@
-import { type } from "os";
 import { Blog } from "src/blog/entities/blog.entity";
 import {PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Entity, OneToMany } from "typeorm";
 
@@ -7,9 +6,9 @@ export class Menu {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @Column()
+    @Column({unique: true})
     title: string;
-
+   
     @Column({nullable: true})
     coverImg: string;
 
@@ -24,6 +23,4 @@ export class Menu {
 
     @UpdateDateColumn({type:"timestamp"})
     updatedAt: string;
-
-
 }

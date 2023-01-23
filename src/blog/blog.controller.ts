@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors, Res, ValidationPipe, UsePipes } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Res, ValidationPipe, UsePipes, UploadedFiles } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
@@ -8,38 +8,28 @@ import { diskStorage } from 'multer';
 
 @Controller('blog')
 export class BlogController {
-  constructor(private readonly blogService: BlogService) {}
-
+  constructor(
+    private readonly blogService: BlogService,
+    ) {}
 
   @Post()
   @UsePipes(ValidationPipe)
   @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './files',
-        filename: editFileName,
+   FilesInterceptor('images[]', 10, {
+    fileFilter: imageFileFilter,
+     storage: diskStorage({
+     destination: './files/blogs',
+     filename: editFileName,
       }),
-      fileFilter: imageFileFilter,
-    }),
+    })
   )
-
-  create(@Body() createBlogDto: CreateBlogDto, @UploadedFile() file) {
-     if(file != undefined) {
-    const response = {
-          originalname: file.originalname,
-          filename: file.filename,
-          url: './files/'+ file.filename};
-      return this.blogService.create(createBlogDto, response.url);
-    }
-
-    else{
-      return this.blogService.create(createBlogDto, null);
-    }
-    }
+  create(@Body() createBlogDto: CreateBlogDto, @UploadedFiles() files) {
+    return this.blogService.create(createBlogDto, files)
+  }
   
   @Get('image/:imgpath')
   seeUploadedFile(@Param('imgpath') image, @Res() res) {
-    return res.sendFile(image, { root: './files' });
+    return res.sendFile(image, { root: './files/blogs' });
   }
 
   @Get()

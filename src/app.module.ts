@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { MenuModule } from './menu/menu.module';
 import { BlogModule } from './blog/blog.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ImageModule } from './image/image.module';
+import { AdvertisementModule } from './advertisement/advertisement.module';
+import { GalleryModule } from './gallery/gallery.module';
 import * as dotenv from 'dotenv';
 
 
@@ -23,6 +26,9 @@ dotenv.config()
           synchronize: true,
           autoLoadEntities: true,
            }),
+    ImageModule,
+    AdvertisementModule,
+    GalleryModule,
     ],
   controllers: [AppController],
   providers: [AppService],

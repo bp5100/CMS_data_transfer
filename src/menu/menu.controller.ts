@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ValidationPipe, UsePipes, UploadedFile, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ValidationPipe, UsePipes,  Res, UploadedFile } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
@@ -13,32 +13,27 @@ export class MenuController {
   @Post()
   @UsePipes(ValidationPipe)
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('coverImg', {
       storage: diskStorage({
-        destination: './files',
+        destination: './files/menus',
         filename: editFileName,
       }),
       fileFilter: imageFileFilter,
     }),
   )
-
-  create(@Body() createMenuDto: CreateMenuDto, @UploadedFile() file) {
-     if(file != undefined) {
+  
+   create(@Body() createMenuDto: CreateMenuDto, @UploadedFile() file) {
     const response = {
-          originalname: file.originalname,
-          filename: file.filename,
-          url: './files/'+ file.filename};
-      return this.menuService.create(createMenuDto, response.url);
-    }
-
-    else{
-      return this.menuService.create(createMenuDto, null);
-    }
-  }
+      originalname: file.originalname,
+      filename: file.filename,
+      url: '/image/' + file.filename,
+    };
+      return this.menuService.create(createMenuDto, response.url)
+   }
   
   @Get('image/:imgpath')
   seeUploadedFile(@Param('imgpath') image, @Res() res) {
-    return res.sendFile(image, { root: './files' });
+    return res.sendFile(image, { root: './files/menus' });
   }
 
   @Get()

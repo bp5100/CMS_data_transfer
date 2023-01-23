@@ -1,4 +1,3 @@
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -23,13 +22,13 @@ export class MenuService {
     });
   }
  
-
   async findAll() {
     return await this.menuRepository.createQueryBuilder("menu").getMany();
   }
 
   async findOne(id: number) {
-    return await this.menuRepository.createQueryBuilder("menu").where(`menu.id=${id}`).leftJoinAndSelect("menu.blog", "blog").getOne();
+    return await this.menuRepository.createQueryBuilder("menu")
+    .where(`menu.id=${id}`).leftJoinAndSelect("menu.blog", "blog").getOne();
   }
 
   async update(id: number, updateMenuDto: UpdateMenuDto) {
