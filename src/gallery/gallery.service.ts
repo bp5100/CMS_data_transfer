@@ -25,7 +25,6 @@ export class GalleryService {
   } 
       
   async createManyImage(images) {
-    console.log(images)
     return await this.galleryRepository
       .createQueryBuilder("gallery")
       .insert()

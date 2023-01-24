@@ -16,7 +16,7 @@ export class Gallery {
     url: string;
 
     @ManyToOne(type => Blog, blog => blog.gallery)
-    // @JoinColumn({name: "blogId", referencedColumnName: "id"})
+    @JoinColumn({name: "blogId", referencedColumnName: "id"})
     blog: Blog;
 
     @CreateDateColumn({type:"timestamp"})

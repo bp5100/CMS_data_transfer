@@ -36,17 +36,29 @@ export class BlogService {
 
   async findAll() {
     return await this.blogRepository.createQueryBuilder("blog")
-    .leftJoinAndSelect("blog.image", "image").getMany();
+    .leftJoinAndSelect("blog.image", "image")
+    .getMany();
   }
 
+  async blogTitle() {
+    return await this.blogRepository.createQueryBuilder("blog")
+    .select(['blog.id', 'blog.title'])
+    .getMany();
+    
+  } 
   async findOne(id: number) {
     return await this.blogRepository.createQueryBuilder("blog")
-    .where(`blog.id=${id}`).leftJoinAndSelect("blog.menu", "menu").getOne();
+    .where(`blog.id=${id}`)
+    .leftJoinAndSelect("blog.menu", "menu")
+    .getOne();
   }
 
   async advertisementByBlogId(id: number) {
     return await this.blogRepository.createQueryBuilder("blog")
-    .where(`blog.id=${id}`).leftJoinAndSelect("blog.advertisement", "advertisement").getMany();
+    .where(`blog.id=${id}`)
+    .leftJoinAndSelect("blog.advertisement", "advertisement")
+    .select(['blog.id', 'blog.title', 'advertisement'])
+    .getMany();
   }
 
   async update(id: number, updateBlogDto: UpdateBlogDto) {

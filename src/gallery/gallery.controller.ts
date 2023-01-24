@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { GalleryService } from './gallery.service';
 import { CreateGalleryDto } from './dto/create-gallery.dto';
 import { UpdateGalleryDto } from './dto/update-gallery.dto';
@@ -6,15 +6,11 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from 'src/file-upload.utils';
 import { diskStorage } from 'multer';
 
-import { REQUEST } from '@nestjs/core';
-import { request, Request } from 'express';
-import { Blog } from 'src/blog/entities/blog.entity';
-
-
 @Controller('gallery')
 export class GalleryController {
-  constructor(private readonly galleryService: GalleryService,
-    @Inject(REQUEST) private readonly request: Request) {}
+  constructor(
+    private readonly galleryService: GalleryService,
+    ) {}
 
   @Post()
   @UseInterceptors(
@@ -26,18 +22,20 @@ export class GalleryController {
        }),
      }) 
    ) 
-   create(@Body() CreateGalleryDto: CreateGalleryDto, @UploadedFiles() files) {
-    let createBlogGallery = [{}]
-     if(files != undefined) {
+   createManyImage(@Body() createGalleryDto: CreateGalleryDto, @UploadedFiles() files) {
+    console.log(createGalleryDto)
+    let createBlogGallery = [{}];
+    if(files != undefined) {
         for (let i = 0; i < files.length; i++ ) {   
            createBlogGallery[i] = {
-           title: files[i].filename,
-           url: '/image/gallery/' + files[i].filename,
+           title: files[i].originalname,
+           url: '/image/' + files[i].filename,
            filename: files[i].filename,
-           blog : CreateGalleryDto.blog,
-       }}
-     return this.galleryService.createManyImage(createBlogGallery);
-   }}
+           blog : createGalleryDto.blog,
+       };
+      }}
+      return this.galleryService.createManyImage(createBlogGallery);
+    }
  
 
   @Get()

@@ -36,17 +36,21 @@ export class BlogController {
   findAll() {
     return this.blogService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.blogService.findOne(+id);
-  }
-
+ 
   @Get('advertisement/:id')
   advertisemntByBlogId(@Param('id') id: string) {
     return this.blogService.advertisementByBlogId(+id);
   }
 
+  @Get('title')
+  blogTitle() {
+    return this.blogService.blogTitle();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.blogService.findOne(+id);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBlogDto: UpdateBlogDto) {
