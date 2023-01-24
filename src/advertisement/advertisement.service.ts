@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
@@ -7,6 +8,7 @@ import { Advertisement } from './entities/advertisement.entity';
 @Injectable()
 export class AdvertisementService {
   constructor(
+    @InjectRepository(Advertisement)    
     private advertisementRepository: Repository<Advertisement>
   ){}
   
@@ -15,11 +17,11 @@ export class AdvertisementService {
   }
 
   async findAll() {
-    return await this.advertisementRepository.createQueryBuilder('advertisement').getMany();
+    return await this.advertisementRepository.createQueryBuilder("advertisement").getMany();
   }
 
   async findOne(id: number) {
-    return await this.advertisementRepository.createQueryBuilder('advertisement')
+    return await this.advertisementRepository.createQueryBuilder("advertisement")
     .where(`advertisement.id =${id}`).getOne();
 
   }

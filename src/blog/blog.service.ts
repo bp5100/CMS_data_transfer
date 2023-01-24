@@ -44,6 +44,11 @@ export class BlogService {
     .where(`blog.id=${id}`).leftJoinAndSelect("blog.menu", "menu").getOne();
   }
 
+  async advertisementByBlogId(id: number) {
+    return await this.blogRepository.createQueryBuilder("blog")
+    .where(`blog.id=${id}`).leftJoinAndSelect("blog.advertisement", "advertisement").getMany();
+  }
+
   async update(id: number, updateBlogDto: UpdateBlogDto) {
     return await this.blogRepository.update(id, updateBlogDto);
   }

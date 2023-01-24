@@ -31,6 +31,12 @@ export class MenuService {
     .where(`menu.id=${id}`).leftJoinAndSelect("menu.blog", "blog").getOne();
   }
 
+  async findBlogs(title: string) {
+   console.log(title)
+    return await this.menuRepository.createQueryBuilder("menu")
+    .where(`menu.title=${title}`).leftJoinAndSelect("menu.blog", "blog").getOne();
+  }
+
   async update(id: number, updateMenuDto: UpdateMenuDto) {
     return await this.menuRepository.update(id, updateMenuDto);
   }

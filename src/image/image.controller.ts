@@ -12,7 +12,7 @@ export class ImageController {
     return res.sendFile(image, { root: './files/blogs' });
   }
 
-  @Get()
+  @Get()  
   findAll() {
     return this.imageService.findAll();
   }

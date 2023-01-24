@@ -14,5 +14,5 @@ import { ImageModule } from 'src/image/image.module';
   controllers: [BlogController],
   providers: [BlogService, Repository],
   exports: [BlogService]
-})
+}) 
 export class BlogModule {}

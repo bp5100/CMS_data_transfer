@@ -1,34 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UsePipes, ValidationPipe } from '@nestjs/common';
+import { FileInterceptor, } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from 'src/file-upload.utils';
 import { AdvertisementService } from './advertisement.service';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
-import { Advertisement } from './entities/advertisement.entity';
 import { diskStorage } from 'multer'
 
 @Controller('advertisement')
 export class AdvertisementController {
   constructor(
-    @InjectRepository(Advertisement)
     private readonly advertisementService: AdvertisementService
     ) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   @UseInterceptors(
-    FilesInterceptor('images[]', 10, {
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './files/advertisements',
+        filename: editFileName,
+      }),
       fileFilter: imageFileFilter,
-       storage: diskStorage({
-       destination: './files/advertisements',
-       filename: editFileName,
-        }),
-      })
+    }),
   )
-  create(@Body() createAdvertisementDto: CreateAdvertisementDto, @UploadedFiles() files) {
-    
-    console.log(files)
-    return this.advertisementService.create(createAdvertisementDto);
+  
+  create(@Body() createAdvertisementDto: CreateAdvertisementDto, @UploadedFile() file) {
+    if(file != undefined) {
+      createAdvertisementDto.img = '/image/' + file.filename
+    }
+   return this.advertisementService.create(createAdvertisementDto);
   }
 
   @Get()
