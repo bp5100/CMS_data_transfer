@@ -28,16 +28,16 @@ export class Advertisement {
     @Column({ type: 'enum', enum: typeEnum, default: typeEnum.INFO })
     type: typeEnum;
     
-    @Column()
-    order: string;
+    @Column({default: 1})
+    order: number;
 
-    @CreateDateColumn({type:"timestamp"})
-    createdAt: string;
+    @CreateDateColumn()
+    createdAt: Date;
 
-    @UpdateDateColumn({type:"timestamp"})
-    updatedAt: string;
+    @UpdateDateColumn()
+    updatedAt: Date;
 
-    @DeleteDateColumn({type: "timestamp"})
-    public deletedAt: string;
+    @DeleteDateColumn()
+    public deletedAt: Date;
 
 }

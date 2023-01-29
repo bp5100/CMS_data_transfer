@@ -50,11 +50,16 @@ export class BlogService {
     .getOne();
   }
 
-  async blogTitleById(id: number) {
+  async blogTitle(title: string) {
     return await this.blogRepository.createQueryBuilder("blog")
-    .where(`blog.id=${id}`)
-    .select(['blog.id', 'blog.title'])
-    .getOne();    
+    .where("blog.title like :blogTitle", { blogTitle:`%${title}%` })
+    .getMany();
+  } 
+
+  async blogContent(searchWords: string) {
+    return await this.blogRepository.createQueryBuilder("blog")
+    .where("blog.content like :blogContent", { blogContent:`%${searchWords}%` })
+    .getMany();
   } 
 
   async blogGalleryById(id: number) {

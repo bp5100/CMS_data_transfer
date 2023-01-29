@@ -37,9 +37,14 @@ export class BlogController {
     return this.blogService.findAll();
   }
  
-  @Get('title/:id')
-  blogTitleById(@Param('id') id:string) {
-    return this.blogService.blogTitleById(+id);
+  @Get('title/:title')
+  blogTitle(@Param('title') title:string) {
+    return this.blogService.blogTitle(title);
+  }
+
+  @Get('content/:searchWords')
+  blogContent(@Param('searchWords') searchWords:string) {
+    return this.blogService.blogContent(searchWords);
   }
 
   @Get('gallery/:id')
