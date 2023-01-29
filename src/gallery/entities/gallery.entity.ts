@@ -19,12 +19,13 @@ export class Gallery {
     @JoinColumn({name: "blogId", referencedColumnName: "id"})
     blog: Blog;
 
-    @CreateDateColumn({type:"timestamp"})
-    createdAt: string;
+    @CreateDateColumn()
+    createdAt: Date;
+    
+    @UpdateDateColumn()
+    updatedAt: Date;
+    
+    @DeleteDateColumn()
+    public deletedAt: Date;
 
-    @UpdateDateColumn({type:"timestamp"})
-    updatedAt: string;
-
-    @DeleteDateColumn({type: "timestamp"})
-    public deletedAt: string;
 }

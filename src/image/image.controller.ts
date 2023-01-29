@@ -1,8 +1,9 @@
 import { Controller, Get, Body, Put, Param, Delete, Res} from "@nestjs/common";
 import { ImageService } from './image.service';
 import { UpdateImageDto } from './dto/update-image.dto';
+import { ApiTags } from "@nestjs/swagger";
 
-
+@ApiTags('image')
 @Controller('image')
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}

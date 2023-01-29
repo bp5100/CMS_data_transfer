@@ -5,7 +5,10 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { editFileName, imageFileFilter } from '../utility/file-upload.utils';
 import { diskStorage } from 'multer';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FilesUploadDto } from 'src/utility/file-upload.dto';
 
+@ApiTags('blog')
 @Controller('blog')
 export class BlogController {
   constructor(
@@ -23,6 +26,13 @@ export class BlogController {
       }),
     })
   )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+  description: 'Images for Blog',
+  type: FilesUploadDto,
+  })
+  uploadFile(@UploadedFiles() files) {}
+
   create(@Body() createBlogDto: CreateBlogDto, @UploadedFiles() files) {
     return this.blogService.create(createBlogDto, files)
   }

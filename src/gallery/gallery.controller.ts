@@ -6,7 +6,10 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from 'src/utility/file-upload.utils';
 import { diskStorage } from 'multer';
 import { UseFilters } from '@nestjs/common/decorators';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FilesUploadDto } from 'src/utility/file-upload.dto';
 
+@ApiTags('gallery')
 @Controller('gallery')
 export class GalleryController {
   constructor(
@@ -24,7 +27,14 @@ export class GalleryController {
       filename: editFileName,
        }),
      }) 
-   ) 
+   )
+   @ApiConsumes('multipart/form-data')
+   @ApiBody({
+   description: 'Images for Gallery',
+   type: FilesUploadDto,
+   })
+   uploadFile(@UploadedFiles() files) {} 
+   
   createManyImage(@Body() createGalleryDto: CreateGalleryDto, @UploadedFiles() files) {
     if(files.length < 1){
       throw new Error ("Please Upload Images.");

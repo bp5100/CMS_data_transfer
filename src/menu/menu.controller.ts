@@ -5,7 +5,10 @@ import { UpdateMenuDto } from './dto/update-menu.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from 'src/utility/file-upload.utils';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileUploadDto } from 'src/utility/file-upload.dto';
 
+@ApiTags('menu')
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
@@ -20,7 +23,13 @@ export class MenuController {
       }),
       fileFilter: imageFileFilter,
     }),
-  )
+  ) 
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+  description: 'Image for Menu',
+  type: FileUploadDto,
+  })
+  uploadFile(@UploadedFile() file) {}
   
    create(@Body() createMenuDto: CreateMenuDto, @UploadedFile() file) {
     const response = {
