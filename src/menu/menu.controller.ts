@@ -4,8 +4,7 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from 'src/file-upload.utils';
-import { title } from 'process';
+import { editFileName, imageFileFilter } from 'src/utility/file-upload.utils';
 
 @Controller('menu')
 export class MenuController {
@@ -42,23 +41,15 @@ export class MenuController {
     return this.menuService.findAll();
   }
 
+  @Get(':title')
+  findBlogs(@Param('title') title: string) {
+    return this.menuService.findBlogs(title);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.menuService.findOne(+id);
   } 
-
-  // @Get(':title')
-  // findBlogs(@Param('title') title: string) {
-  //   if(!title){
-  //   console.log(title)
-  //   return "abc"; }
-  //   // return this.menuService.findBlogs(title);
-  // }
-
-  @Get(':title')
-  findBlogs(@Param('title') menu, @Res() res) {
-    return title; }
-
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {

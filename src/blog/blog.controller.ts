@@ -3,7 +3,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-import { editFileName, imageFileFilter } from '../file-upload.utils';
+import { editFileName, imageFileFilter } from '../utility/file-upload.utils';
 import { diskStorage } from 'multer';
 
 @Controller('blog')
@@ -37,14 +37,19 @@ export class BlogController {
     return this.blogService.findAll();
   }
  
+  @Get('title/:id')
+  blogTitleById(@Param('id') id:string) {
+    return this.blogService.blogTitleById(+id);
+  }
+
+  @Get('gallery/:id')
+  blogGalleryById(@Param('id') id:string) {
+    return this.blogService.blogGalleryById(+id);
+  }
+
   @Get('advertisement/:id')
   advertisemntByBlogId(@Param('id') id: string) {
     return this.blogService.advertisementByBlogId(+id);
-  }
-
-  @Get('title')
-  blogTitle() {
-    return this.blogService.blogTitle();
   }
 
   @Get(':id')

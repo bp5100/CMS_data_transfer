@@ -12,13 +12,13 @@ export class Image {
   @JoinColumn({name: 'blogId', referencedColumnName: 'id',},)
   blog: Blog;
     
-  @Column()
+  @Column({nullable: true})
   title: string;
 
-  @Column()
+  @Column({nullable: true})
   filename: string;
   
-  @Column()
+  @Column({nullable: true})
   url: string;
       
   @DeleteDateColumn()
@@ -29,16 +29,6 @@ export class Image {
   
   @UpdateDateColumn()
   updatedAt: Date;
-  
-//   @AfterRemove()
-//   async removeImages() {
-//     if (fs.existsSync('./files/blogs' + this.url.replace('/images/get', ''))) {
-//       await fs.unlink(
-//         './files/' + this.url.replace('/images/get', ''),
-//         () => {},
-//       );
-//     }
-// } 
-
+ 
 }
   

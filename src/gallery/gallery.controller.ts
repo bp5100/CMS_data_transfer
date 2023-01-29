@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UsePipes, ValidationPipe } from '@nestjs/common';
 import { GalleryService } from './gallery.service';
 import { CreateGalleryDto } from './dto/create-gallery.dto';
 import { UpdateGalleryDto } from './dto/update-gallery.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { editFileName, imageFileFilter } from 'src/file-upload.utils';
+import { editFileName, imageFileFilter } from 'src/utility/file-upload.utils';
 import { diskStorage } from 'multer';
+import { UseFilters } from '@nestjs/common/decorators';
 
 @Controller('gallery')
 export class GalleryController {
@@ -13,6 +14,8 @@ export class GalleryController {
     ) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
+  @UseFilters()
   @UseInterceptors(
     FilesInterceptor('images[]', 10, {
      fileFilter: imageFileFilter,
@@ -22,22 +25,22 @@ export class GalleryController {
        }),
      }) 
    ) 
-   createManyImage(@Body() createGalleryDto: CreateGalleryDto, @UploadedFiles() files) {
-    console.log(createGalleryDto)
-    let createBlogGallery = [{}];
-    if(files != undefined) {
-        for (let i = 0; i < files.length; i++ ) {   
-           createBlogGallery[i] = {
-           title: files[i].originalname,
-           url: '/image/' + files[i].filename,
-           filename: files[i].filename,
-           blog : createGalleryDto.blog,
-       };
-      }}
-      return this.galleryService.createManyImage(createBlogGallery);
+  createManyImage(@Body() createGalleryDto: CreateGalleryDto, @UploadedFiles() files) {
+    if(files.length < 1){
+      throw new Error ("Please Upload Images.");
     }
- 
-
+    let createBlogGallery = [{}];
+    for (let i = 0; i < files.length; i++ ) {   
+      createBlogGallery[i] = {
+      title: files[i].originalname,
+      url: '/image/' + files[i].filename,
+      filename: files[i].filename,
+      blog : createGalleryDto.blog,
+      }   
+    }     
+    return this.galleryService.createManyImage(createBlogGallery);
+  }
+  
   @Get()
   findAll() {
     return this.galleryService.findAll();

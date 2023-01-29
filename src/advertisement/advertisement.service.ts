@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
 import { Advertisement } from './entities/advertisement.entity';
+import * as fs from "fs";
+
 
 @Injectable()
 export class AdvertisementService {
@@ -31,6 +33,13 @@ export class AdvertisementService {
   }
 
   async remove(id: number) {
-    return await this.advertisementRepository.delete(id);
+    const advertisement: Advertisement = await this.findOne(id);
+    const name = advertisement.img.split('/')[2];
+    if (fs.existsSync("./files/advertisements/" + name)) {
+      await fs.unlink("./files/advertisements/" + name, () => {
+      });
+    }
+    const res = await this.advertisementRepository.delete(+id);
+    return res;
   }
 }
