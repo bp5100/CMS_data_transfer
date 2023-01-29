@@ -21,14 +21,15 @@ export class Image {
   @Column({nullable: true})
   url: string;
       
-  @DeleteDateColumn()
-  public deletedAt: Date;
-  
   @CreateDateColumn()
   createdAt: Date;
   
   @UpdateDateColumn()
   updatedAt: Date;
+  
+  @DeleteDateColumn()
+  public deletedAt: Date;
+
  
 }
   

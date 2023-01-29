@@ -5,7 +5,9 @@ import { AdvertisementService } from './advertisement.service';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
 import { diskStorage } from 'multer'
-
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileUploadDto } from 'src/utility/file-upload.dto'
+@ApiTags('advertisement')
 @Controller('advertisement')
 export class AdvertisementController {
   constructor(
@@ -23,6 +25,13 @@ export class AdvertisementController {
       fileFilter: imageFileFilter,
     }),
   )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+  description: 'Image for Advertisement',
+  type: FileUploadDto,
+  })
+  uploadFile(@UploadedFile() file) {}
+
   
   create(@Body() createAdvertisementDto: CreateAdvertisementDto, @UploadedFile() file) {
     if(file != undefined) {
