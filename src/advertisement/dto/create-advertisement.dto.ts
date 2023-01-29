@@ -25,5 +25,5 @@ export class CreateAdvertisementDto {
     link: string;
 
     @IsNotEmpty()
-    order: string;
+    order: number;
 }
