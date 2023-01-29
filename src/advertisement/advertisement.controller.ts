@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FileInterceptor, } from '@nestjs/platform-express';
-import { editFileName, imageFileFilter } from 'src/file-upload.utils';
+import { editFileName, imageFileFilter } from 'src/utility/file-upload.utils';
 import { AdvertisementService } from './advertisement.service';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';

@@ -6,7 +6,7 @@ export class Menu {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @Column({unique: true})
+    @Column()
     title: string;
    
     @Column({nullable: true})

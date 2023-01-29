@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Blog } from "src/blog/entities/blog.entity";
-import { typeEnum } from "../types";
+import { typeEnum } from "src/utility/types";
 
 export class CreateAdvertisementDto {
     @IsNotEmpty()

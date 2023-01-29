@@ -10,7 +10,7 @@ export class Blog {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @Column({unique: true})
+    @Column()
     title: string;
     
     @OneToMany(type => Image, image => image.blog)
