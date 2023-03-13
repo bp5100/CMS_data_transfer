@@ -2,7 +2,7 @@ import { Controller, Get, Body, Put, Param, Delete, Res, UploadedFile, Post, Use
 import { ImageService } from './image.service';
 import { UpdateImageDto } from './dto/update-image.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateImageDto } from "./dto/create-image.dto";
+import { CreateImageDto } from './dto/create-image.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from './images.util';
@@ -34,7 +34,7 @@ export class ImageController {
       url: '/images/get/' + file.filename,
       filename: file.filename,
     };
-    return this.imagesService.create(createImageDto);
+    return this.imageService.create(createImageDto);
   }
 
   @Get(':imgpath')

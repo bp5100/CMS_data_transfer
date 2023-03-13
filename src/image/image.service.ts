@@ -13,7 +13,9 @@ export class ImageService {
     @InjectRepository(Image)
     private imageRepository: Repository<Image>,
   ) {}
-
+  async create(createImageDto: CreateImageDto): Promise<Image> {
+    return await this.imageRepository.save(createImageDto);
+  }
   async findAll(): Promise<Image[]> {
     return await this.imageRepository
       .createQueryBuilder('image')
