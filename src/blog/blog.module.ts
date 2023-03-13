@@ -7,12 +7,9 @@ import { Repository } from 'typeorm';
 import { ImageModule } from 'src/image/image.module';
 
 @Module({
-  imports: [
-  TypeOrmModule.forFeature([Blog]),
-  forwardRef(() => ImageModule),
-  ],
+  imports: [TypeOrmModule.forFeature([Blog]), forwardRef(() => ImageModule)],
   controllers: [BlogController],
   providers: [BlogService, Repository],
-  exports: [BlogService]
-}) 
+  exports: [BlogService],
+})
 export class BlogModule {}

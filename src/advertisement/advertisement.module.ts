@@ -8,6 +8,6 @@ import { Repository } from 'typeorm';
 @Module({
   imports: [TypeOrmModule.forFeature([Advertisement])],
   controllers: [AdvertisementController],
-  providers: [AdvertisementService, Repository]
+  providers: [AdvertisementService, Repository],
 })
 export class AdvertisementModule {}

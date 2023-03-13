@@ -1,20 +1,20 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { ApiPropertyOptional } from "@nestjs/swagger/dist";
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger/dist';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateMenuDto {
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    title: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  title: string;
 
-    @ApiPropertyOptional()
-    @IsOptional()
-    @IsString()
-    coverImg: string;
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  coverImg: string;
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    shortDescription: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  shortDescription: string;
 }

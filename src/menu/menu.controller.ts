@@ -1,4 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ValidationPipe, UsePipes,  Res, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  ValidationPipe,
+  UsePipes,
+  Res,
+  UploadedFile,
+} from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
@@ -23,23 +36,23 @@ export class MenuController {
       }),
       fileFilter: imageFileFilter,
     }),
-  ) 
+  )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-  description: 'Image for Menu',
-  type: FileUploadDto,
+    description: 'Image for Menu',
+    type: FileUploadDto,
   })
   uploadFile(@UploadedFile() file) {}
-  
-   create(@Body() createMenuDto: CreateMenuDto, @UploadedFile() file) {
+
+  create(@Body() createMenuDto: CreateMenuDto, @UploadedFile() file) {
     const response = {
       originalname: file.originalname,
       filename: file.filename,
       url: '/image/' + file.filename,
     };
-      return this.menuService.create(createMenuDto, response.url)
-   }
-  
+    return this.menuService.create(createMenuDto, response.url);
+  }
+
   @Get('image/:imgpath')
   seeUploadedFile(@Param('imgpath') image, @Res() res) {
     return res.sendFile(image, { root: './files/menus' });
@@ -58,7 +71,7 @@ export class MenuController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.menuService.findOne(+id);
-  } 
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {

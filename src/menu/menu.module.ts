@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 @Module({
   imports: [TypeOrmModule.forFeature([Menu])],
   controllers: [MenuController],
-  providers: [MenuService, Repository], 
+  providers: [MenuService, Repository],
   exports: [MenuService],
 })
 export class MenuModule {}

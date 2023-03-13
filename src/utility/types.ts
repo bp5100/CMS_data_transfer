@@ -1,6 +1,5 @@
 export enum typeEnum {
-    LINK = 'LINK',
-    QUOTE = 'QUOTE',
-    INFO = 'INFO',
-  }
-  
+  LINK = 'LINK',
+  QUOTE = 'QUOTE',
+  INFO = 'INFO',
+}

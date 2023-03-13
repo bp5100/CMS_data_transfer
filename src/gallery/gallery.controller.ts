@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFiles,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { GalleryService } from './gallery.service';
 import { CreateGalleryDto } from './dto/create-gallery.dto';
 import { UpdateGalleryDto } from './dto/update-gallery.dto';
@@ -12,45 +24,46 @@ import { FilesUploadDto } from 'src/utility/file-upload.dto';
 @ApiTags('gallery')
 @Controller('gallery')
 export class GalleryController {
-  constructor(
-    private readonly galleryService: GalleryService,
-    ) {}
+  constructor(private readonly galleryService: GalleryService) {}
 
   @Post()
   @UsePipes(ValidationPipe)
   @UseFilters()
   @UseInterceptors(
     FilesInterceptor('images[]', 10, {
-     fileFilter: imageFileFilter,
+      fileFilter: imageFileFilter,
       storage: diskStorage({
-      destination: './files/gallery',
-      filename: editFileName,
-       }),
-     }) 
-   )
-   @ApiConsumes('multipart/form-data')
-   @ApiBody({
-   description: 'Images for Gallery',
-   type: FilesUploadDto,
-   })
-   uploadFile(@UploadedFiles() files) {} 
-   
-  createManyImage(@Body() createGalleryDto: CreateGalleryDto, @UploadedFiles() files) {
-    if(files.length < 1){
-      throw new Error ("Please Upload Images.");
+        destination: './files/gallery',
+        filename: editFileName,
+      }),
+    }),
+  )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Images for Gallery',
+    type: FilesUploadDto,
+  })
+  uploadFile(@UploadedFiles() files) {}
+
+  createManyImage(
+    @Body() createGalleryDto: CreateGalleryDto,
+    @UploadedFiles() files,
+  ) {
+    if (files.length < 1) {
+      throw new Error('Please Upload Images.');
     }
     let createBlogGallery = [{}];
-    for (let i = 0; i < files.length; i++ ) {   
+    for (let i = 0; i < files.length; i++) {
       createBlogGallery[i] = {
-      title: files[i].originalname,
-      url: '/image/' + files[i].filename,
-      filename: files[i].filename,
-      blog : createGalleryDto.blog,
-      }   
-    }     
+        title: files[i].originalname,
+        url: '/image/' + files[i].filename,
+        filename: files[i].filename,
+        blog: createGalleryDto.blog,
+      };
+    }
     return this.galleryService.createManyImage(createBlogGallery);
   }
-  
+
   @Get()
   findAll() {
     return this.galleryService.findAll();

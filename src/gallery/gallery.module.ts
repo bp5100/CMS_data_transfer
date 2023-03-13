@@ -8,6 +8,6 @@ import { Repository } from 'typeorm';
 @Module({
   imports: [TypeOrmModule.forFeature([Gallery])],
   controllers: [GalleryController],
-  providers: [GalleryService, Repository]
+  providers: [GalleryService, Repository],
 })
 export class GalleryModule {}

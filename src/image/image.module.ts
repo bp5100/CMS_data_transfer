@@ -9,7 +9,6 @@ import { Repository } from 'typeorm';
   imports: [TypeOrmModule.forFeature([Image])],
   controllers: [ImageController],
   providers: [ImageService, Repository],
-  exports: [ImageService]
+  exports: [ImageService],
 })
 export class ImageModule {}
-  
