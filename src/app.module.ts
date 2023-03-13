@@ -11,6 +11,7 @@ import * as dotenv from 'dotenv';
 import { MulterModule } from "@nestjs/platform-express";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { UserModule } from "./user/user.module";
+import { HealthModule } from './health/health.module';
 
 dotenv.config();
 @Module({
@@ -19,6 +20,7 @@ dotenv.config();
     UserModule,
     MenuModule,
     BlogModule,
+    HealthModule,
     MulterModule.register({
       dest: './files',
     }),
