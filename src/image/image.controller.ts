@@ -1,12 +1,41 @@
-import { Controller, Get, Body, Put, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Body, Put, Param, Delete, Res, UploadedFile, Post, UseInterceptors } from "@nestjs/common";
 import { ImageService } from './image.service';
 import { UpdateImageDto } from './dto/update-image.dto';
 import { ApiTags } from '@nestjs/swagger';
-
+import { CreateImageDto } from "./dto/create-image.dto";
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { editFileName, imageFileFilter } from './images.util';
 @ApiTags('image')
 @Controller('image')
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}
+
+  @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './files',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async uploadedFile(
+    @UploadedFile() file,
+    @Body() createImageDto: CreateImageDto,
+  ) {
+    const response = {
+      originalname: file.originalname,
+      filename: file.filename,
+    };
+    createImageDto = {
+      ...createImageDto,
+      url: '/images/get/' + file.filename,
+      filename: file.filename,
+    };
+    return this.imagesService.create(createImageDto);
+  }
 
   @Get(':imgpath')
   seeCustomScreenImages(@Param('imgpath') image, @Res() res) {
