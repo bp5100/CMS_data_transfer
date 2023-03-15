@@ -1,7 +1,7 @@
 
 pipeline {
   environment {
-    repo = "registry.gitlab.com/arniko/CMS"
+    repo = "registry.gitlab.com/arniko/cms"
   }
   agent any
   stages {
