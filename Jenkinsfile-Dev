@@ -1,0 +1,64 @@
+
+pipeline {
+  environment {
+    repo = "registry.gitlab.com/arniko/CMS"
+  }
+  agent any
+  stages {
+    stage('Start'){
+      when { branch 'master' }
+      steps{
+        script{
+          withCredentials([usernamePassword(credentialsId: 'gitlab-registery', passwordVariable: 'Password', usernameVariable: 'User')]) {
+            sh "docker login -u ${env.User} -p ${env.Password} registry.gitlab.com"
+          }
+        }
+        echo "Pipeline Started"
+      }
+    }
+    stage('Docker Build') {
+      steps {
+        sh 'docker build -f Dockerfile-Dev -t $repo:latest  .'
+      }
+    }
+    stage('Docker Push') {
+      steps {
+          sh 'docker push $repo:latest'
+        }
+      }
+    stage('Clean docker image') {
+      steps {
+        sh 'docker rmi $repo:latest'
+      }
+    }
+    stage('deployed app to test ') {
+      steps{
+        sshagent(credentials:['krafters_vps']){
+          sh 'ssh  -o StrictHostKeyChecking=no  root@66.29.130.87 "cd  /home/arnikocms/scripts && sh pull_latest.sh && sh shutdown.sh && sh deploy.sh"'
+        }
+      }
+    }
+  }
+//   post{
+//     always {
+//       script{
+//         if (currentBuild.result == "FAILURE") {
+//           mattermostSend(
+//             color: "#e00707",
+//             channel: '#development-deployment',
+//             endpoint: 'https://mattermost.krafters.dev/hooks/4y3rwxr7cpd7dpr9zgzy1kjpqr',
+//             text: "Build FAILED: ${currentBuild.rawBuild.getLog(100).join("\n")}",
+//             message: "Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+//           )
+//         } else {
+//           mattermostSend(
+//             color: "#00f514",
+//             channel: '#development-deployment',
+//             endpoint: 'https://mattermost.krafters.dev/hooks/4y3rwxr7cpd7dpr9zgzy1kjpqr',
+//             message: "Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+//           )
+//         }
+//       }
+//     }
+//   }
+}

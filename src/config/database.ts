@@ -3,15 +3,13 @@ import * as dotenv from 'dotenv';
 
 dotenv.config(); // Load .env file
 export const dbconfig = {
-  type: 'mysql',
-  host: process.env.DATABASE_HOST,
-  port:
-    (process.env.DATABASE_PORT && parseInt(process.env.DATABASE_PORT, 10)) ||
-    3306,
-  database: process.env.DATABASE_NAME,
-  username: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  synchronize: process.env.DATABASE_SCHEMA_SYNC === 'true',
+  type: 'pgsql',
+  host: process.env.DATABASE_HOST || 66.29.130.87,
+  port: 5433,
+  database: process.env.DATABASE_NAME || 'arnikocms',
+  username: process.env.DATABASE_USER || 'arniko' ,
+  password: process.env.DATABASE_PASSWORD || 'Arn!ko123',
+  synchronize: false',
   autoLoadEntities: true,
   bigNumberStrings: false,
   // logging: process.env.TYPEORM_QUERY_LOGGING === 'true',
