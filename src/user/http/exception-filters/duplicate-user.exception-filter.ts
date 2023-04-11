@@ -21,5 +21,10 @@ export class DuplicateUserExceptionFilter
       status: HttpStatus.UNPROCESSABLE_ENTITY,
       detail: exception.message,
     } as IErrorBody);
+
+    response.status(400).json({
+      message: 'Bad Request',
+      error: 'Invalid input',
+    });
   }
 }

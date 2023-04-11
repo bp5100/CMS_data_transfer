@@ -42,7 +42,6 @@ export class BlogController {
     description: 'Images for Blog',
     type: FilesUploadDto,
   })
-  uploadFile(@UploadedFiles() files) {}
 
   create(@Body() createBlogDto: CreateBlogDto, @UploadedFiles() files) {
     return this.blogService.create(createBlogDto, files);

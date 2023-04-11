@@ -11,6 +11,7 @@ import {
   UsePipes,
   Res,
   UploadedFile,
+  UseFilters,
 } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
@@ -42,15 +43,18 @@ export class MenuController {
     description: 'Image for Menu',
     type: FileUploadDto,
   })
-  uploadFile(@UploadedFile() file) {}
 
-  create(@Body() createMenuDto: CreateMenuDto, @UploadedFile() file) {
-    const response = {
-      originalname: file.originalname,
-      filename: file.filename,
-      url: '/image/' + file.filename,
-    };
-    return this.menuService.create(createMenuDto, response.url);
+  async create(@Body() createMenuDto: CreateMenuDto, @UploadedFile() file) {
+    if(file){
+      const response = {
+        originalname: file.originalname,
+        filename: file.filename,
+        url: '/image/' + file.filename,
+      }; 
+      createMenuDto.coverImg = response.url;
+    }
+    
+    return this.menuService.create(createMenuDto);
   }
 
   @Get('image/:imgpath')
@@ -63,12 +67,12 @@ export class MenuController {
     return this.menuService.findAll();
   }
 
-  @Get(':title')
-  findBlogs(@Param('title') title: string) {
-    return this.menuService.findBlogs(title);
+  @Get('title/:title')
+  findMenusByTitle(@Param('title') title: string) {
+    return this.menuService.findMenusByTitle(title);
   }
 
-  @Get(':id')
+  @Get('id/:id')
   findOne(@Param('id') id: string) {
     return this.menuService.findOne(+id);
   }

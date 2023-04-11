@@ -3,13 +3,13 @@ import * as dotenv from 'dotenv';
 
 dotenv.config(); // Load .env file
 export const dbconfig = {
-  type: 'pgsql',
-  host: process.env.DATABASE_HOST || 66.29.130.87,
+  type: process.env.DATABASE_TYPE || 'pgsql',
+  host: process.env.DATABASE_HOST,
   port: 5433,
   database: process.env.DATABASE_NAME || 'arnikocms',
   username: process.env.DATABASE_USER || 'arniko' ,
   password: process.env.DATABASE_PASSWORD || 'Arn!ko123',
-  synchronize: false',
+  synchronize: false,
   autoLoadEntities: true,
   bigNumberStrings: false,
   // logging: process.env.TYPEORM_QUERY_LOGGING === 'true',

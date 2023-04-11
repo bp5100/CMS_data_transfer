@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { ImageService } from 'src/image/image.service';
 import * as fs from 'fs';
 import { Image } from 'src/image/entities/image.entity';
+import { error } from 'console';
 
 @Injectable()
 export class BlogService {
@@ -18,6 +19,7 @@ export class BlogService {
   ) {}
 
   async create(createBlogDto: CreateBlogDto, files) {
+   
     let newBlog = await this.blogRepository.save(createBlogDto);
     let createImages = [{}];
     if (files.length > 0) {
@@ -30,11 +32,12 @@ export class BlogService {
         };
       }
     }
-    this.imageService.createManyImage(createImages);
-    return await this.blogRepository.save({
-      ...newBlog,
-      ...UpdateBlogDto,
-    });
+    await this.imageService.createManyImage(createImages);
+
+    return {
+      "status": 1,
+      "message": "Blog created."
+    };
   }
 
   async findAll() {

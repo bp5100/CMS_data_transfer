@@ -43,7 +43,6 @@ export class GalleryController {
     description: 'Images for Gallery',
     type: FilesUploadDto,
   })
-  uploadFile(@UploadedFiles() files) {}
 
   createManyImage(
     @Body() createGalleryDto: CreateGalleryDto,

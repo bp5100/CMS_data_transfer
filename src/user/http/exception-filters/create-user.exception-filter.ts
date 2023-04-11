@@ -5,8 +5,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { CreateUserException } from '../../exceptions/create-user.exception';
 import { IErrorBody } from '../../../core/http/response/types';
+import { CreateUserException } from 'src/user/exceptions/create-user.exception';
 
 @Catch(CreateUserException)
 export class CreateUserExceptionFilter

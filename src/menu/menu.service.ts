@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMenuDto } from './dto/create-menu.dto';
@@ -13,13 +13,17 @@ export class MenuService {
     private menuRepository: Repository<Menu>,
   ) {}
 
-  async create(createMenuDto: CreateMenuDto, url: string) {
-    let newMenu = await this.menuRepository.save(createMenuDto);
-    newMenu.coverImg = url;
-    return await this.menuRepository.save({
-      ...newMenu,
-      ...UpdateMenuDto,
-    });
+  async create(createMenuDto: CreateMenuDto) {
+    try{
+        return await this.menuRepository.save(createMenuDto);
+    }catch(error){
+      if(error.code === '23505') {
+        throw new ConflictException("Menu title already exists!!");
+      }
+      else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 
   async findAll() {
@@ -34,11 +38,11 @@ export class MenuService {
       .getOne();
   }
 
-  async findBlogs(title: string) {
+  async findMenusByTitle(title: string) {
     console.log(title);
     return await this.menuRepository
       .createQueryBuilder('menu')
-      .where(`menu.title=${title}`)
+      .where('menu.title like :menuTitle', { menuTitle: `%${title}%` })
       .leftJoinAndSelect('menu.blog', 'blog')
       .select(['menu.title', 'blog.title'])
       .getMany();
